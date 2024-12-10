@@ -1,0 +1,72 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET Build and Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+
+env:
+    PROJECT: Mtd.Extensions.AspNetCore
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        dotnet-version: [9.0.x]
+    permissions:
+      contents: read    # Added permission
+      packages: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Restore dependencies
+        env:
+          MtdGithubUserName: CUMTD
+          MtdGithubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+        run: dotnet restore $PROJECT.sln
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release $PROJECT.sln
+
+      - name: Test
+        run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage"
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test-Results-${{ runner.os }}-${{ github.run_id }}
+          path: '**/TestResults/*.xml'
+
+      - name: Upload Code Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: Code-Coverage-${{ runner.os }}-${{ github.run_id }}
+          path: '**/coverage.cobertura.xml'
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Build-Artifacts-${{ matrix.os }}-${{ github.run_id }}
+          path: "**/Api/bin/Release/net*/**"

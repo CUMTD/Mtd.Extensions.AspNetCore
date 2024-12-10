@@ -1,0 +1,57 @@
+name: Publish Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  PACKAGE_ID: 'Mtd.Extensions.AspNetCore'
+  COPYRIGHT: 'Champaign-Urbana Mass Transit District'
+  LICENSE: 'Apache-2.0'
+  ICON: 'icon.png'
+  README: 'readme.md'
+  REPO: 'git@github.com:CUMTD/Mtd.Extensions.AspNetCore.git'
+  DESCRIPTION: 'MTD'
+  OUTPUT: 'nupkgs'
+  TAG_NAME: ${{ github.event.release.tag_name }}
+  NUGET_URL: https://nuget.pkg.github.com/cumtd/index.json
+
+jobs:
+  build-pack:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    env:
+      MtdGithubUserName: CUMTD
+      MtdGithubAccessToken: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x' # SDK Version to use.
+      - name: Set VERSION variable from tag
+        run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+      - name: Restore dependencies
+        run: dotnet restore -p:Version=$VERSION $PACKAGE_ID.sln
+      - name: Build
+        run: dotnet build --no-restore --configuration Release -p:Version=$VERSION $PACKAGE_ID.sln
+      - name: Create the package
+        run: dotnet pack $PACKAGE_ID.sln -p:Version=$VERSION -p:PackageVersion=$VERSION -p:PackageId="$PACKAGE_ID" -p:Copyright="$COPYRIGHT" -p:PackageRequireLicenseAcceptance=false -p:PackageLicenseExpression="$LICENSE" -p:PackageIcon="$ICON" -p:PackageReadmeFile="$README" -p:RepositoryUrl="$REPO" -p:RepositoryType=git -p:Description="$DESCRIPTION" -p:IncludeSymbols=true -p:DebugType=portable -p:IncludeSource=true -p:SymbolPackageFormat=snupkg --no-build --no-restore --configuration Release --output $OUTPUT
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: false
+          files: |
+            $OUTPUT/$PACKAGE_ID.$VERSION.nupkg
+            $OUTPUT/$PACKAGE_ID.$VERSION.snupkg
+      - name: Publish the package to GPR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          dotnet nuget push $OUTPUT/$PACKAGE_ID.$VERSION.nupkg --source $NUGET_URL --api-key ${GITHUB_TOKEN} --skip-duplicate
+          dotnet nuget push $OUTPUT/$PACKAGE_ID.$VERSION.snupkg --source $NUGET_URL --api-key ${GITHUB_TOKEN} --skip-duplicate

@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtd.Extensions.AspNetCore", "Mtd.Extensions.AspNetCore\Mtd.Extensions.AspNetCore.csproj", "{0C961F74-5847-4C53-94C2-1AED471CC762}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{5B6D8BE5-9A8E-4DAB-9F38-3425D28B6353}"
+	ProjectSection(SolutionItems) = preProject
+		.github\dependabot.yml = .github\dependabot.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{F8D2AD29-08FD-45FD-9191-8A117C125F92}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-test.yml = .github\workflows\build-test.yml
+		.github\workflows\publish-release.yml = .github\workflows\publish-release.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BFCF5990-7A4E-4BD3-8DB3-765B131CE31B}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
+		Directory.Packages.props = Directory.Packages.props
+		icon.png = icon.png
+		nuget.config = nuget.config
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtd.Extensions.AspNetCore.Test", "Mtd.Extensions.AspNetCore.Test\Mtd.Extensions.AspNetCore.Test.csproj", "{8DF05CFC-EE1B-4890-BAE0-E9E604AB4A32}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C961F74-5847-4C53-94C2-1AED471CC762}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C961F74-5847-4C53-94C2-1AED471CC762}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C961F74-5847-4C53-94C2-1AED471CC762}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C961F74-5847-4C53-94C2-1AED471CC762}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DF05CFC-EE1B-4890-BAE0-E9E604AB4A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DF05CFC-EE1B-4890-BAE0-E9E604AB4A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DF05CFC-EE1B-4890-BAE0-E9E604AB4A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF05CFC-EE1B-4890-BAE0-E9E604AB4A32}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F8D2AD29-08FD-45FD-9191-8A117C125F92} = {5B6D8BE5-9A8E-4DAB-9F38-3425D28B6353}
+	EndGlobalSection
+EndGlobal

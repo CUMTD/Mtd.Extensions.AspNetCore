@@ -1,0 +1,21 @@
+<Project Sdk="MSTest.Sdk/3.6.1">
+	<PropertyGroup>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<TargetFramework>net9.0</TargetFramework>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Mtd.Extensions.AspNetCore\Mtd.Extensions.AspNetCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Update="MSTest.Analyzers">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+</Project>
