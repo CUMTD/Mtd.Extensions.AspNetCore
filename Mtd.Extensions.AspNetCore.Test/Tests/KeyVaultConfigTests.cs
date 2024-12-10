@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using Mtd.Extensions.AspNetCore.Config;
 
 namespace Mtd.Extensions.AspNetCore.Test.Tests;

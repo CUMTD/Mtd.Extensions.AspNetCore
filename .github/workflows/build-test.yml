@@ -50,14 +50,14 @@ jobs:
         run: dotnet build --no-restore --configuration Release $PROJECT.sln
 
       - name: Test
-        run: dotnet test --no-build --configuration Release --verbosity normal /p:CollectCoverage=true /p:CoverletOutput=coverage /p:CoverletOutputFormat=cobertura
+        run: dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutput=coverage /p:CoverletOutputFormat=cobertura --logger "trx;LogFileName=test-results.trx"
 
       - name: Upload Test Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: Test-Results-${{ runner.os }}-${{ github.run_id }}
-          path: '**/TestResults/*.xml'
+          path: '**/TestResults/*.trx'
 
       - name: Upload Code Coverage
         uses: actions/upload-artifact@v4

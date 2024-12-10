@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mtd.Extensions.AspNetCore.Config;
 using Mtd.Extensions.AspNetCore.Extensions;
@@ -131,6 +132,6 @@ public class WebApplicationBuilderExtensionsTests
 			.Where(js => js?.Path?.EndsWith("secrets.json", StringComparison.OrdinalIgnoreCase) ?? false);
 
 		// Assert
-		Assert.IsTrue(userSecretSources.Count() == 0, "User secrets configuration file (secrets.json) was added to the configuration.");
+		Assert.IsTrue(!userSecretSources.Any(), "User secrets configuration file (secrets.json) was added to the configuration.");
 	}
 }
