@@ -70,3 +70,11 @@ jobs:
         with:
           name: Build-Artifacts-${{ matrix.os }}-${{ github.run_id }}
           path: "**/Api/bin/Release/net*/**"
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: ${{ matrix.os }} Test Report
+          artifact: "Test-Results-${{ matrix.os }}-${{ github.run_id }}"
+          # path: "**/test-results-${{ runner.os }}-${{ github.run_id }}.trx"
+          reporter: dotnet-trx
