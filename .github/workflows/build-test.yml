@@ -76,5 +76,5 @@ jobs:
         with:
           name: ${{ matrix.os }} Test Report
           artifact: "Test-Results-${{ matrix.os }}-${{ github.run_id }}"
-          # path: "**/test-results-${{ runner.os }}-${{ github.run_id }}.trx"
+          path: "**/*.trx"
           reporter: dotnet-trx
