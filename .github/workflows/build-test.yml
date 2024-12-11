@@ -56,13 +56,13 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: Test-Results-${{ runner.os }}-${{ github.run_id }}
+          name: Test-Results-${{ matrix.os }}-${{ github.run_id }}
           path: '**/TestResults/*.trx'
 
       - name: Upload Code Coverage
         uses: actions/upload-artifact@v4
         with:
-          name: Code-Coverage-${{ runner.os }}-${{ github.run_id }}
+          name: Code-Coverage-${{ matrix.os }}-${{ github.run_id }}
           path: '**/coverage.cobertura.xml'
 
       - name: Upload Build Artifacts
