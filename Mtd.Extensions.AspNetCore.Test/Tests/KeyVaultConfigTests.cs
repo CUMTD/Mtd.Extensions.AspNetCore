@@ -23,6 +23,7 @@ public class KeyVaultConfigTests
 	}
 
 	[TestMethod]
+	[ExpectedException(typeof(ValidationException))]
 	public void Validate_MissingKeyVaultUrl_ThrowsValidationException()
 	{
 		var config = new KeyVaultConfig
@@ -31,7 +32,7 @@ public class KeyVaultConfigTests
 			EnvironmentVariablePrefix = "MYAPP_"
 		};
 
-		Assert.ThrowsException<ValidationException>(config.Validate);
+		config.Validate();
 	}
 
 	[TestMethod]

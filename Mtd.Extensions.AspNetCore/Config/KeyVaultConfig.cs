@@ -5,7 +5,7 @@ namespace Mtd.Extensions.AspNetCore.Config;
 /// <summary>
 /// Configuration for Azure Key Vault.
 /// </summary>
-public class KeyVaultConfig
+public class KeyVaultConfig : ValidatableConfig
 {
 	/// <summary>
 	/// The prefix to use for environment variables. Must end with '_'
@@ -24,21 +24,4 @@ public class KeyVaultConfig
 	/// The URI of the KeyVault, derived from KeyVaultUrl.
 	/// </summary>
 	public Uri KeyVaultUri => new(KeyVaultUrl);
-
-	/// <summary>
-	/// Validates this KeyVaultConfig instance using data annotations.
-	/// Throws <see cref="ValidationException"/> if validation fails.
-	/// </summary>
-	public void Validate()
-	{
-		var validationContext = new ValidationContext(this);
-		var validationResults = new List<ValidationResult>();
-
-		if (!Validator.TryValidateObject(this, validationContext, validationResults, validateAllProperties: true))
-		{
-			// Combine all error messages into a single string for the exception
-			var errorMessage = string.Join("; ", validationResults.Select(r => r.ErrorMessage));
-			throw new ValidationException($"KeyVaultConfig validation failed: {errorMessage}");
-		}
-	}
 }
