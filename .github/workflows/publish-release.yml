@@ -1,9 +1,11 @@
 name: Publish Release
 
 on:
+  release:
+    types: [created]
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - "v[0-9]+.[0-9]+.[0-9]+"
 
 env:
   PACKAGE_ID: 'Mtd.Extensions.AspNetCore'
@@ -18,7 +20,7 @@ env:
   NUGET_URL: https://nuget.pkg.github.com/cumtd/index.json
 
 jobs:
-  build-pack:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -39,16 +41,6 @@ jobs:
         run: dotnet build --no-restore --configuration Release -p:Version=$VERSION $PACKAGE_ID.sln
       - name: Create the package
         run: dotnet pack $PACKAGE_ID.sln -p:Version=$VERSION -p:PackageVersion=$VERSION -p:PackageId="$PACKAGE_ID" -p:Copyright="$COPYRIGHT" -p:PackageRequireLicenseAcceptance=false -p:PackageLicenseExpression="$LICENSE" -p:PackageIcon="$ICON" -p:PackageReadmeFile="$README" -p:RepositoryUrl="$REPO" -p:RepositoryType=git -p:Description="$DESCRIPTION" -p:IncludeSymbols=true -p:DebugType=portable -p:IncludeSource=true -p:SymbolPackageFormat=snupkg --no-build --no-restore --configuration Release --output $OUTPUT
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        with:
-          generate_release_notes: true
-          draft: false
-          prerelease: false
-          fail_on_unmatched_files: false
-          files: |
-            $OUTPUT/$PACKAGE_ID.$VERSION.nupkg
-            $OUTPUT/$PACKAGE_ID.$VERSION.snupkg
       - name: Publish the package to GPR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
