@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 using Mtd.Extensions.AspNetCore.Config;
 
@@ -31,15 +32,15 @@ public class SimpleApiKeyFilter : IAuthorizationFilter
 	/// <param name="logger">The logger used to log details during the authorization process.</param>
 	/// <exception cref="ArgumentNullException">Thrown when <paramref name="apiKeyConfig"/> or <paramref name="logger"/> is <c>null</c>.</exception>
 	/// <exception cref="ValidationException">Thrown if <paramref name="apiKeyConfig"/> is invalid.</exception>
-	public SimpleApiKeyFilter(ApiKeyConfig apiKeyConfig, ILogger<SimpleApiKeyFilter> logger)
+	public SimpleApiKeyFilter(IOptions<ApiKeyConfig> apiKeyConfig, ILogger<SimpleApiKeyFilter> logger)
 	{
-		ArgumentNullException.ThrowIfNull(apiKeyConfig, nameof(apiKeyConfig));
+		ArgumentNullException.ThrowIfNull(apiKeyConfig?.Value, nameof(apiKeyConfig));
 		ArgumentNullException.ThrowIfNull(logger, nameof(logger));
 
 		// Validate the apiKeyConfig using data annotations.
-		apiKeyConfig.Validate();
+		apiKeyConfig.Value.Validate();
 
-		_keys = apiKeyConfig.Keys;
+		_keys = apiKeyConfig.Value.Keys;
 		_logger = logger;
 	}
 

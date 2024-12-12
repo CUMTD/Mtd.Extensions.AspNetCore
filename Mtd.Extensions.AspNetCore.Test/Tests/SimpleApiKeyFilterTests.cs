@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Mtd.Extensions.AspNetCore.Config;
@@ -30,7 +31,10 @@ internal class SimpleApiKeyFilterTests
 		{
 			Keys = ["ValidKey"]
 		};
-		var filter = new SimpleApiKeyFilter(config, null!);
+
+		var options = new OptionsWrapper<ApiKeyConfig>(config);
+
+		var filter = new SimpleApiKeyFilter(options, null!);
 	}
 
 	[TestMethod]
@@ -42,7 +46,10 @@ internal class SimpleApiKeyFilterTests
 		{
 			Keys = [] // No keys provided
 		};
-		var filter = new SimpleApiKeyFilter(config, logger);
+
+		var options = new OptionsWrapper<ApiKeyConfig>(config);
+
+		var filter = new SimpleApiKeyFilter(options, logger);
 	}
 
 	[TestMethod]
@@ -54,7 +61,9 @@ internal class SimpleApiKeyFilterTests
 			Keys = ["ValidKey"]
 		};
 
-		var filter = new SimpleApiKeyFilter(config, logger);
+		var options = new OptionsWrapper<ApiKeyConfig>(config);
+
+		var filter = new SimpleApiKeyFilter(options, logger);
 
 		var httpContext = new DefaultHttpContext();
 		httpContext.Request.Headers["X-ApiKey"] = "ValidKey";
@@ -78,7 +87,9 @@ internal class SimpleApiKeyFilterTests
 			Keys = ["ValidKey"]
 		};
 
-		var filter = new SimpleApiKeyFilter(config, logger);
+		var options = new OptionsWrapper<ApiKeyConfig>(config);
+
+		var filter = new SimpleApiKeyFilter(options, logger);
 
 		var httpContext = new DefaultHttpContext();
 		httpContext.Request.Headers["X-ApiKey"] = "InvalidKey";
@@ -102,7 +113,9 @@ internal class SimpleApiKeyFilterTests
 			Keys = ["ValidKey"]
 		};
 
-		var filter = new SimpleApiKeyFilter(config, logger);
+		var options = new OptionsWrapper<ApiKeyConfig>(config);
+
+		var filter = new SimpleApiKeyFilter(options, logger);
 
 		var httpContext = new DefaultHttpContext();
 		// No X-ApiKey header
