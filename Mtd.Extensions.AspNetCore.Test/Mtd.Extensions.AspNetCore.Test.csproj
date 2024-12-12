@@ -7,6 +7,11 @@
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 		<TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
 	</PropertyGroup>
+	<ItemGroup>
+	  <Compile Remove="TestResults\**" />
+	  <EmbeddedResource Remove="TestResults\**" />
+	  <None Remove="TestResults\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Mtd.Extensions.AspNetCore\Mtd.Extensions.AspNetCore.csproj" />
